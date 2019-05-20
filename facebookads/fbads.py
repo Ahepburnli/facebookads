@@ -5,6 +5,7 @@ import time
 
 def job():
     os.system("scrapy crawl fbads")
+    print(1)
 
 
 # schedule.every().day.at("00:00").do(job)

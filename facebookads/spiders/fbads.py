@@ -71,6 +71,7 @@ class FbadsSpider(scrapy.Spider):
         requests = []
         # 使用pandas链接数据库读取
         sql = 'select pageId from fb_homepage'
+        self.conn.ping(reconnect=True)  # 若mysql连接失败就重连
         # 从mysql中读取pageid
         df = pd.read_sql(sql, self.conn)
         # 取出的pageid存入redis
@@ -166,7 +167,7 @@ class FbadsSpider(scrapy.Spider):
                 item['video_img'] = None
                 item['origin_video_url'] = None
                 item['page_id'] = 0
-                item['title'] = None
+                item['title'] = 0
                 item['country_id'] = 1
                 item['introduce'] = None
                 item['landpage'] = None
@@ -204,10 +205,13 @@ class FbadsSpider(scrapy.Spider):
                 try:
                     # 广告介绍
                     introduce = ad[0]['snapshot']['body']['markup']['__html']
-                    item['introduce'] = introduce.replace('<br />', '')
+                    introduce = introduce.replace('<br />', '')
+                    item['introduce'] = re.findall('(.*)<a', introduce, re.S)[0]
                 except Exception as e:
                     print(e)
-                    item['introduce'] = None
+                    introduce = ad[0]['snapshot']['body']['markup']['__html']
+                    introduce = introduce.replace('<br />', '')
+                    item['introduce'] = introduce
                 # 国家id,默认美国为1
                 item['country_id'] = 1
                 try:

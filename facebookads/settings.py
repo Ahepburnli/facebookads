@@ -151,7 +151,7 @@ MYSQL_PORT = 3306
 MYSQL_DB = 'facebookads'
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = 'lky'
-MYSQL_CHARSET = 'utf8'
+MYSQL_CHARSET = 'utf8mb4'
 
 USER_AGENT_LIST = [
     "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 2.0.50727; Media Center PC 6.0)",

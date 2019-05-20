@@ -28,7 +28,6 @@ import json
 #             self.file.close()
 
 
-
 '''
 把数据存到mysql中,将数据增量去重
 '''
@@ -39,9 +38,8 @@ import logging
 from redis import Redis
 from scrapy.exceptions import DropItem
 import time
-from facebookads.settings import REDIS_HOST, REDIS_PORT,REDIS_DB,REDIS_PASSWORD
+from facebookads.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 from facebookads.settings import MYSQL_HOST, MYSQL_PORT, MYSQL_DB, MYSQL_USER, MYSQL_PASSWORD, MYSQL_CHARSET
-
 
 
 # from facebookads.settings import REDIS_URL
@@ -92,11 +90,14 @@ class FacebookadsPymysqlPipeline(object):
         if spider.name == 'fbads':
             if self.redis_db.hexists(self.redis_data_dict,
                                      item['adid']):  # 取item里的adid和key里的字段对比，看是否存在，存在就丢掉这个item。不存在返回item给后面的函数处理
-                raise DropItem("已存在的adid的所有数据不再入库" )  # 并且不再往下执行
+                raise DropItem("已存在的adid的所有数据不再入库")  # 并且不再往下执行
+            if item['title'] == '{{product.name}}':
+                raise DropItem("title is {{product.name}}")
 
-            # 若在adid在hash中不存在,存入mysql数据库
+                # 若在adid在hash中不存在,存入mysql数据库
             insert_sql = "insert ignore into fb_ads (publish_date,video_img,origin_video_url,page_id,title,country_id,introduce,landpage,spider_date,adid,ad_archive_id,ad_creative_id,ad_md5,ad_type,ads_url) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             print('sql语句正确')
+            self.conn.ping(reconnect=True)  # 若mysql连接失败就重连
             # 增加鲁棒性
             try:
                 self.cs1.execute(insert_sql,
@@ -145,7 +146,6 @@ redis哈希结构：
 而item里key是'adid' value是实际的adid
 相当于用key(redis_data_dict)的字段(adid)来对比item['adid']的值，存在为1(true)，不存在就是0(false)
 '''
-
 
 # class FacebookadsSaveSpiderPipeline(object):
 #     def __init__(self):
