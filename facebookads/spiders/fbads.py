@@ -190,7 +190,7 @@ class FbadsSpider(scrapy.Spider):
                     # 广告id
                     item['adid'] = ad[0]['adid']
                 except Exception as e:
-                    print(e, '没有广告数据')
+                    print(e, 'NO CONTENT')
                     item['adid'] = 0
                 # 广告存档id
                 item['ad_archive_id'] = ad[0]['adArchiveID']
@@ -218,7 +218,7 @@ class FbadsSpider(scrapy.Spider):
                     # 广告类型,部分广告本地区查看不了，此数据也获取不到
                     type = ad[0]['snapshot']['display_format']
                 except Exception as e:
-                    print(e, ':没有广告数据')
+                    print(e, 'NO CONTENT')
                     type = None
                 # cards = ad[0]['snapshot']['cards']
                 if type == 'video':
@@ -290,7 +290,7 @@ class FbadsSpider(scrapy.Spider):
                         # 数据在cards中,得到一个列表
                         cards = ad[0]['snapshot']['cards']
                     except Exception as e:
-                        print(e, ':没有广告数据')
+                        print(e, 'NO CONTENT')
                     try:
                         # 标题
                         cards = ad[0]['snapshot']['cards']
@@ -393,7 +393,7 @@ class FbadsSpider(scrapy.Spider):
                     # 广告id
                     item['adid'] = ad[0]['adid']
                 except Exception as e:
-                    print(e, '没有广告数据')
+                    print(e, 'NO CONTENT')
                     item['adid'] = 0
                 # 广告存档id
                 item['ad_archive_id'] = ad[0]['adArchiveID']
@@ -418,7 +418,7 @@ class FbadsSpider(scrapy.Spider):
                     # 广告类型,部分广告本地区查看不了，此数据也获取不到
                     type = ad[0]['snapshot']['display_format']
                 except Exception as e:
-                    print(e, ':没有广告数据')
+                    print(e, 'NO CONTENT')
                     type = None
                 # cards = ad[0]['snapshot']['cards']
                 if type == 'video':
@@ -491,7 +491,7 @@ class FbadsSpider(scrapy.Spider):
                         # 数据在cards中,得到一个列表
                         cards = ad[0]['snapshot']['cards']
                     except Exception as e:
-                        print(e, ':没有数据')
+                        print(e, 'NO CONTENT')
                     try:
                         # 标题
                         cards = ad[0]['snapshot']['cards']
